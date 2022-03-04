@@ -54,7 +54,8 @@ namespace web_api.Controllers
             _context.Entry(room).State = EntityState.Modified;
 
             try
-            { await _context.SaveChangesAsync();
+            {
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,6 +76,7 @@ namespace web_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
+            room.Status = "Available";
             _context.Rooms.Add(room);
             await _context.SaveChangesAsync();
 

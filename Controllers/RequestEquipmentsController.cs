@@ -25,7 +25,7 @@ namespace web_api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestEquipment>>> GetRequestEquipments()
         {
-            return await _context.RequestEquipments.ToListAsync();
+            return await _context.RequestEquipments.Include(r => r.Equipment).ToListAsync();
         }
 
         // GET: api/RequestEquipments/5
@@ -79,9 +79,11 @@ namespace web_api.Controllers
             requestEquipment.RequestDate = DateTime.Now;
             _context.RequestEquipments.Add(requestEquipment);
             var equipment = await _context.Equipments.FindAsync(requestEquipment.EquipmentId);
+            var quantity = equipment.Quantity - requestEquipment.Quantity;
             if (equipment.Quantity < requestEquipment.Quantity) return BadRequest(new { message = "Quantity invalid" });
             equipment.Status = "Pending";
-            equipment.Quantity -= requestEquipment.Quantity;
+            if (quantity == 0)
+                equipment.Quantity -= requestEquipment.Quantity;
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequestEquipment", new { id = requestEquipment.Id }, requestEquipment);
@@ -99,6 +101,7 @@ namespace web_api.Controllers
             var equipment = await _context.Equipments.FindAsync(requestEquipment.EquipmentId);
             equipment.Status = null;
             equipment.Quantity += requestEquipment.Quantity;
+            equipment.Status = "Available";
 
             _context.RequestEquipments.Remove(requestEquipment);
             await _context.SaveChangesAsync();

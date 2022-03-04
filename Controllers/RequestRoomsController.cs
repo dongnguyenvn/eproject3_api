@@ -99,6 +99,7 @@ namespace web_api.Controllers
             }
             var room = await _context.Rooms.FindAsync(requestRoom.RoomId);
             room.Status = null;
+            room.Status = "Available";
 
             _context.RequestRooms.Remove(requestRoom);
             await _context.SaveChangesAsync();

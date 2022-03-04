@@ -78,6 +78,8 @@ namespace web_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Equipment>> PostEquipment(Equipment equipment)
         {
+            if (equipment.Quantity == 0) equipment.Status = "Unavailable";
+            else equipment.Status = "Available";
             _context.Equipments.Add(equipment);
             await _context.SaveChangesAsync();
 
