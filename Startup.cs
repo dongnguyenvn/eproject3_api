@@ -41,6 +41,11 @@ namespace web_api
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            // services.Configure<IdentityOptions>(options =>
+            // {
+            //     // Default User settings.
+            //     options.User.RequireUniqueEmail = true;
+            // });
 
             // Adding Authentication
             services.AddAuthentication(options =>
@@ -49,6 +54,7 @@ namespace web_api
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+
 
             // Adding Jwt Bearer
             .AddJwtBearer(options =>

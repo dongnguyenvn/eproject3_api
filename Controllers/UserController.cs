@@ -71,6 +71,7 @@ namespace web_api.Controllers
         {
             var currentUser = GetCurrentUser();
             var user = await _userManager.FindByNameAsync(currentUser.UserName);
+            if (!(await _userManager.CheckPasswordAsync(user, model.CurrentPassword))) return BadRequest(new { message = "Current password invalid" });
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.UpdatePassword);
             if (!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Something wrong" });
 

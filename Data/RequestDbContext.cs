@@ -9,14 +9,10 @@ namespace web_api.Data
         {
 
         }
-        public DbSet<RequestRoom> RequestRooms { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Room>()
-                .HasOne(r => r.RequestRoom)
-                .WithOne(r => r.Room)
-                .HasForeignKey<RequestRoom>(r => r.RoomId);
-        }
+        public DbSet<RequestRoom> RequestRooms { get; set; }
+        public DbSet<Equipment> Equipments { get; set; }
+        public DbSet<RequestEquipment> RequestEquipments { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
     }
 }
